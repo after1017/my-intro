@@ -1,14 +1,14 @@
 :root {
-    /* Color Palette - Pale Blue & White Base */
-    --bg-color: #f0f7fb;
-    --primary-color: #8bb8d7; /* Pale Blue */
-    --secondary-color: #aed1e6;
-    --accent-color: #5c93b9;
+    /* Color Palette - Bright Light Theme */
+    --primary-color: #4a90e2; /* Bright blue accent */
+    --secondary-color: #8bb8d7;
+    --accent-color: #3b6b91;
     --text-main: #2c4c61;
     --text-muted: #5e7f94;
-    --card-bg: rgba(255, 255, 255, 0.7);
-    --card-border: rgba(255, 255, 255, 0.5);
-    --shadow: 0 8px 32px rgba(139, 184, 215, 0.15);
+    --card-bg: rgba(255, 255, 255, 0.85); /* Light glass with opacity */
+    --card-border: rgba(255, 255, 255, 0.6);
+    --shadow: 0 8px 32px rgba(74, 144, 226, 0.15);
+    --bg-overlay: rgba(255, 255, 255, 0.75); /* Whitish thin overlay */
 }
 
 * {
@@ -19,108 +19,95 @@
 
 body {
     font-family: 'Nunito', 'Kosugi Maru', sans-serif;
-    background-color: var(--bg-color);
     color: var(--text-main);
     line-height: 1.6;
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
+    overflow: hidden; /* Prevent body scroll, use scroll-container instead */
+    background-color: #f0f7fb;
 }
 
-/* Background Shapes Setup */
-.background-shapes {
+/* Background Image with Overlay */
+body::before {
+    content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
+    background-image: url('./assets/campus_bg_light.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    z-index: -2;
+    filter: brightness(1.05);
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-overlay);
     z-index: -1;
-    overflow: hidden;
 }
 
-.shape {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.6;
+/* Scroll Container for Snapping removed - now continuous */
+.scroll-container {
+    height: 100vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 4rem; /* Extra padding at bottom */
 }
 
-.shape-1 {
-    width: 400px;
-    height: 400px;
-    background: var(--primary-color);
-    top: -100px;
-    left: -100px;
-    animation: float 10s ease-in-out infinite alternate;
+/* Sections - normal sizing */
+.content-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2rem 1.5rem;
+    margin: 2rem auto;
 }
 
-.shape-2 {
-    width: 500px;
-    height: 500px;
-    background: #e6f2fb;
-    bottom: -150px;
-    right: -100px;
-    animation: float 12s ease-in-out infinite alternate-reverse;
+/* Make the first hero section take up a bit more space, but not forced 100vh */
+#hero {
+    min-height: 80vh;
+    margin-top: 4rem;
 }
 
-.shape-3 {
-    width: 300px;
-    height: 300px;
-    background: #c3e0f5;
-    top: 40%;
-    right: 20%;
-    animation: float 8s ease-in-out infinite alternate;
-}
-
-@keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(30px, 30px) scale(1.05); }
-}
-
-/* Container */
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem;
-}
-
-/* Glassmorphism Classes */
-.glass {
+/* Glassmorphism Panel */
+.glass-panel {
     background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--card-border);
     box-shadow: var(--shadow);
     border-radius: 24px;
-}
-
-/* Hero Section */
-.profile-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--shadow);
-    border-radius: 24px;
-    padding: 3rem 2rem;
+    padding: 3rem;
     text-align: center;
-    margin-bottom: 3rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 800px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
 }
 
-.profile-card:hover {
+.glass-panel:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(139, 184, 215, 0.25);
+    box-shadow: 0 15px 40px rgba(74, 144, 226, 0.25);
+    border-color: rgba(255, 255, 255, 0.8);
 }
 
+/* Avatar */
 .avatar-container {
     position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 0 auto 1.5rem;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 2rem;
     border-radius: 50%;
-    padding: 5px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    padding: 6px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
 }
 
 .avatar {
@@ -128,153 +115,167 @@ body {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid white;
-    background-color: white;
+    border: 4px solid #ffffff;
+    background-color: #ffffff;
 }
 
 .upload-btn {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    background-color: var(--accent-color);
+    background-color: var(--primary-color);
     color: white;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
 }
 
 .upload-btn:hover {
-    background-color: var(--text-main);
+    background-color: white;
+    color: var(--primary-color);
     transform: scale(1.1);
 }
 
+/* Typography */
 .name {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     font-weight: 800;
     margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+    color: var(--text-main);
 }
 
 .subtitle {
     color: var(--text-muted);
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
+    font-size: 1.3rem;
+    margin-bottom: 2.5rem;
+    font-weight: 600;
 }
 
+/* Tags */
 .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.5rem;
     justify-content: center;
 }
 
 .tag {
-    background: white;
-    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 2rem;
     border-radius: 50px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 15px rgba(139, 184, 215, 0.1);
-    border: 1px solid rgba(255,255,255,0.8);
-    transition: transform 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
 }
 
 .tag:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
 }
 
 .tag-label {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 .tag-value {
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-top: 0.2rem;
-}
-
-/* Sections */
-.content-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-    .content-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .challenge-card {
-        grid-column: 1 / -1;
-    }
-}
-
-.info-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--shadow);
-    border-radius: 20px;
-    padding: 2rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.info-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(139, 184, 215, 0.2);
-}
-
-.card-icon {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-color);
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 10px rgba(139, 184, 215, 0.15);
-}
-
-.info-card h2 {
+    font-weight: 800;
     font-size: 1.2rem;
-    color: var(--text-muted);
-    margin-bottom: 0.8rem;
-    font-weight: 600;
+    margin-top: 0.4rem;
+}
+
+/* Info Cards inside Sections */
+.info-card h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
 }
 
 .info-card p {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-main);
-    line-height: 1.6;
+    line-height: 1.8;
 }
 
 .challenge-card p {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    margin: 0 auto 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.7;
+    animation: bounce 2s infinite;
+}
+
+.scroll-indicator span {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid var(--text-main);
+    border-bottom: 2px solid var(--text-main);
+    transform: rotate(45deg);
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
 }
 
 /* Footer */
 .footer {
+    position: absolute;
+    bottom: 20px;
     text-align: center;
-    padding: 2rem;
+    width: 100%;
     color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
 /* Animations */
 .fade-in {
     opacity: 0;
-    transition: opacity 0.8s ease-out;
+    transition: opacity 1s ease-out;
 }
 
 .fade-in.appear {
@@ -283,8 +284,8 @@ body {
 
 .slide-up {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(60px);
+    transition: opacity 1s ease-out, transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .slide-up.appear {

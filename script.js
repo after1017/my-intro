@@ -1,18 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Scroll Animations Setup using Intersection Observer
     const animatedElements = document.querySelectorAll('.fade-in, .slide-up');
+    const scrollContainer = document.querySelector('.scroll-container');
 
     const observerOptions = {
-        root: null,
+        root: scrollContainer,
         rootMargin: '0px',
-        threshold: 0.15
+        threshold: 0.3 // Trigger when 30% of the element is visible
     };
 
     const scrollObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('appear');
-                observer.unobserve(entry.target); // Optional: animate only once
+            } else {
+                // Remove class to replay animation when scrolling back
+                entry.target.classList.remove('appear');
             }
         });
     }, observerOptions);
